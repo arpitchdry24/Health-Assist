@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Assist | Your AI Health Guide</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #38bdf8;
+            --dark-bg: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: #e5e7eb;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: fixed;
+            width: 84%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover { color: var(--secondary); }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            padding: 0 10%;
+        }
+
+        .badge {
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--secondary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 20px 0 40px 0;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.4s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-login { background: var(--primary); color: white; }
+        .btn-signup { background: transparent; border: 2px solid var(--primary); color: white; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
+
+        /* Features/Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 80px 8%;
+            background: #0f172a;
+        }
+
+        .service-card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: 0.4s;
+        }
+
+        .service-card:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-10px);
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .service-card p { color: #94a3b8; line-height: 1.6; }
+
+        /* Popups */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid var(--secondary);
+            z-index: 2000;
+            width: 300px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .close-popup {
+            float: right;
+            cursor: pointer;
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div style="font-size: 1.5rem; font-weight: bold;">Health <span style="color: var(--secondary);">Assist</span></div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="#" onclick="showPopup('about')">Our Aim</a>
+            <a href="#" onclick="showPopup('contact')">Support</a>
+            <a href="/login" style="background: var(--primary); padding: 8px 20px; border-radius: 20px;">Get Started</a>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="badge">New: AI Report Analysis</div>
+        <h1>Your Personalized <br>Health Journey Starts Here</h1>
+        <p>Don't be confused by medical jargon. Describe your symptoms, upload your reports, and get recommended to the best doctors at your location instantly.</p>
+        
+        <div class="hero-btns">
+            <a href="/signup" class="btn btn-login">Create Free Account</a>
+            <a href="/login" class="btn btn-signup">Login to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="services-grid">
+        <div class="service-card">
+            <i class="fas fa-file-medical-alt"></i>
+            <h3>Report Interpreter</h3>
+            <p>Upload your lab reports and our AI will explain what the values mean in simple, everyday language.</p>
+        </div>
+        <div class="service-card">
+            <i class="fas fa-user-md"></i>
+            <h3>Doctor Matching</h3>
+            <p>Based on your problem and location, we suggest the most highly-rated specialists nearby.</p>
+        </div>
+        <div class="service-card">
+            <i class="fas fa-pills"></i>
+            <h3>Medicine Guide</h3>
+            <p>Know exactly what your prescribed medicine is for and its common side effects before you take it.</p>
+        </div>
+    </div>
+
+    <div id="about" class="popup">
+        <span class="close-popup" onclick="hidePopup('about')">×</span>
+        <h3>Our Vision</h3>
+        <p>We aim to bridge the gap between complex medical data and patient understanding, ensuring no one feels lost during their treatment.</p>
+    </div>
+
+    <div id="contact" class="popup">
+        <span class="close-popup" onclick="hidePopup('contact')">×</span>
+        <h3>Contact Us</h3>
+        <p><b>Support:</b> +91 7217053582</p>
+        <p><b>Email:</b> support@healthassist.com</p>
+    </div>
+
+    <script>
+        function showPopup(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function hidePopup(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        // Close on click outside
+        window.onclick = function(event) {
+            if (event.target.className === 'popup') {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

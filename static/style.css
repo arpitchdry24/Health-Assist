@@ -1,0 +1,122 @@
+/* ---------- BASIC RESET ---------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* ---------- NAVBAR ---------- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #1a202c; /* professional dark color */
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    z-index: 10;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.navbar a:hover {
+    color: #38b2ac; /* hover highlight only */
+}
+
+/* ---------- BACKGROUND ---------- */
+.main-container {
+    height: 100vh;
+    width: 100%;
+    background-image: url("bg.jpg");
+    background-size: contain;      /* image poori dikhe */
+    background-repeat: no-repeat;
+    background-position: right center;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;             /* navbar ke liye space */
+}
+
+/* ---------- LEFT COLUMN ---------- */
+.left-column {
+    width: 40%;
+    height: 100%;
+    background-color: #e6fffa;     /* light medical green */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ---------- WHITE BOX INSIDE COLUMN ---------- */
+.box {
+    background: white;
+    padding: 30px;
+    width: 80%;                    /* column ke andar fit */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.box h1 {
+    color: #2c7a7b;
+    margin-bottom: 10px;
+}
+
+.box p {
+    color: #444;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #2c7a7b;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.signup {
+    background-color: #3182ce;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* ---------- POPUP SECTIONS ---------- */
+.popup {
+    display: none;
+    background-color: #f7fafc;
+    padding: 20px;
+    margin-top: 80px;
+    border-top: 2px solid #38b2ac;
+}
+
+.popup h3 {
+    color: #2c7a7b;
+}
+# Login form ka data handle karne ke liye
+@app.route('/login', methods=['POST'])
+def login():
+
+    # Form se username lena
+    username = request.form['username']
+
+    # Form se password lena
+    password = request.form['password']
+
+    # Dummy check (college level)
+    if username == "admin" and password == "1234":
+        return "<h2>Login Successful</h2>"
+    else:
+        return "<h2>Invalid Username or Password</h2>"
+

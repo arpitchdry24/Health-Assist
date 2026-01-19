@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Health Assist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0f172a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .checkout-card { background: #1e293b; padding: 40px; border-radius: 24px; width: 400px; text-align: center; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .fee { font-size: 3rem; color: #22c55e; margin: 20px 0; font-weight: 800; }
+        .btn-pay { background: #3b82f6; color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+    <div class="checkout-card">
+        <i class="fas fa-shield-alt" style="font-size: 3rem; color: #3b82f6; margin-bottom: 20px;"></i>
+        <h2>Confirm Booking</h2>
+        <p>Doctor: {{ data.doctor }}</p>
+        <p>Date: {{ data.date }} | Time: {{ data.time }}</p>
+        <div class="fee">₹{{ data.fees }}</div>
+        
+        <button id="rzp-button" class="btn-pay"><i class="fas fa-lock"></i> Pay & Confirm</button>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        // Data from Flask
+        var options = {
+            "key": "{{ data.razorpay_key }}",
+            "amount": "{{ data.fees * 100 }}",
+            "currency": "INR",
+            "name": "Health Assist",
+            "description": "Doctor Booking",
+            "order_id": "{{ data.order_id }}",
+            "handler": function (response){
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/process-payment';
+                
+                var fields = {
+                    'doctor': "{{ data.doctor }}",
+                    'date': "{{ data.date }}",
+                    'time': "{{ data.time }}",
+                    'problem': "{{ data.problem }}",
+                    'amount': "{{ data.fees }}",
+                    'payment_id': response.razorpay_payment_id
+                };
+
+                for (var key in fields) {
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = fields[key];
+                    form.appendChild(input);
+                }
+                document.body.appendChild(form);
+                form.submit();
+            },
+            "theme": { "color": "#3b82f6" }
+        };
+        
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+</body>
+</html>

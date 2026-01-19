@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Health Assist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --bg-color: #1e293b;
+            --card-bg: #ffffff;
+            --nav-bg: #0f172a;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: var(--nav-bg);
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .navbar .logo { color: white; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .navbar .logo span { color: var(--primary); }
+        .navbar a { color: #cbd5e1; text-decoration: none; margin-left: 20px; font-weight: 500; }
+
+        .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+
+        .signup-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .signup-card h1 { color: #0f172a; margin: 0 0 10px 0; text-align: center; }
+        .signup-card p { color: #64748b; text-align: center; margin-bottom: 25px; }
+
+        .input-group { margin-bottom: 15px; position: relative; }
+        .input-group i { position: absolute; left: 15px; top: 15px; color: #94a3b8; }
+
+        input {
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:disabled { background: #f8fafc; cursor: not-allowed; opacity: 0.6; }
+        input:focus:not(:disabled) { outline: none; border-color: var(--primary); }
+
+        .mobile-row { display: flex; gap: 8px; }
+        .btn-otp { width: auto; background: #eff6ff; color: var(--primary); border: 1px solid var(--primary); padding: 0 15px; border-radius: 8px; cursor: pointer; }
+        .btn-otp:disabled { border-color: #e2e8f0; color: #94a3b8; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        .btn-submit:disabled { background: #94a3b8; }
+
+        #mobileNote { color: #ef4444; font-size: 0.8rem; margin-top: 5px; display: block; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">Health<span>Assist</span></a>
+        <div>
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="signup-card">
+            <h1>Create Account</h1>
+            <p>Join Health Assist today</p>
+            <form method="post">
+                <div class="input-group">
+                    <i class="fas fa-user-tag"></i>
+                    <input type="text" id="name" name="name" placeholder="Full Name (First Last)" oninput="checkName()" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" placeholder="Email Address" oninput="checkEmail()" disabled required>
+                </div>
+                <div class="mobile-row">
+                    <input type="text" value="+91" style="width: 60px; text-align: center; padding-left: 0;" disabled>
+                    <div class="input-group" style="flex:1;">
+                        <i class="fas fa-phone"></i>
+                        <input type="text" id="mobile" name="mobile" placeholder="Mobile Number" oninput="checkMobile()" disabled required>
+                    </div>
+                    <button type="button" id="otpBtn" onclick="sendOTP()" class="btn-otp" disabled>OTP</button>
+                </div>
+                <small id="mobileNote" style="display:none;"></small>
+                
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="text" id="otp" name="otp" placeholder="Enter OTP" oninput="checkOTP()" disabled>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-at"></i>
+                    <input type="text" id="username" name="username" placeholder="Username" oninput="checkUsername()" disabled required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Password (Upper, Special, 7+ chars)" oninput="checkPassword()" disabled required>
+                </div>
+                <button type="submit" id="createBtn" class="btn-submit" disabled>Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const mobileInput = document.getElementById("mobile");
+        const mobileNote = document.getElementById("mobileNote");
+        const otpBtn = document.getElementById("otpBtn");
+        const otpInput = document.getElementById("otp");
+        const usernameInput = document.getElementById("username");
+        const passwordInput = document.getElementById("password");
+        const createBtn = document.getElementById("createBtn");
+
+        const namePattern = /^[A-Za-z]+ [A-Za-z]+$/;
+        const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&]).{7,}$/;
+
+        function checkName() {
+            if (namePattern.test(nameInput.value)) { emailInput.disabled = false; } 
+            else { resetFromEmail(); }
+        }
+        function checkEmail() {
+            if (emailInput.value.includes("@")) { mobileInput.disabled = false; } 
+            else { resetFromMobile(); }
+        }
+        function checkMobile() {
+            const val = mobileInput.value;
+            if (val.length === 10 && /^[0-9]+$/.test(val)) {
+                mobileNote.style.display = "none";
+                otpBtn.disabled = false;
+            } else {
+                mobileNote.style.display = "block";
+                mobileNote.innerText = "Enter valid 10 digits";
+                otpBtn.disabled = true;
+            }
+        }
+        function sendOTP() { otpInput.disabled = false; alert("OTP: 123456"); }
+        function checkOTP() { if (otpInput.value.length >= 4) { usernameInput.disabled = false; } }
+        function checkUsername() { if (usernameInput.value.length > 2) { passwordInput.disabled = false; } }
+        function checkPassword() { createBtn.disabled = !passwordPattern.test(passwordInput.value); }
+
+        function resetFromEmail() { emailInput.disabled = true; resetFromMobile(); }
+        function resetFromMobile() { mobileInput.disabled = true; mobileNote.style.display = "none"; otpBtn.disabled = true; otpInput.disabled = true; }
+    </script>
+</body>
+</html>

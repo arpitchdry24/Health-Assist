@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Health Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="dash-navbar">
+    <div class="logo">Health Assist</div>
+
+    <div class="nav-links">
+        <a href="/dashboard">Home</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="user">
+        👤 {{ username }}
+    </div>
+</div>
+
+<!-- AI PAGE CONTENT -->
+<div class="dashboard">
+    <div class="main-area">
+
+        <h2>AI Health Assistant</h2>
+
+        <form method="post">
+            <textarea name="problem"
+                      placeholder="Describe your health problem..."
+                      required
+                      style="width:100%; height:120px;"></textarea>
+
+            <br><br>
+
+            <button type="submit" class="btn-ai">
+                Ask AI Assistant
+            </button>
+        </form>
+
+        {% if ai_result %}
+        <div class="ai-response">
+            <p><strong>Possible Concern:</strong> {{ ai_result.concern }}</p>
+            <p><strong>Recommended Doctor:</strong> {{ ai_result.doctor }}</p>
+            <p><strong>Urgency Level:</strong> {{ ai_result.urgency }}</p>
+            <p><strong>Advice:</strong> {{ ai_result.advice }}</p>
+            <small>⚠️ This is not a medical diagnosis.</small>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

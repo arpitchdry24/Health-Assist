@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyze Report | Health Assist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --bg-color: #1e293b;
+            --nav-bg: #0f172a;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            background-image: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            height: 100vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: var(--nav-bg);
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .navbar a { color: white; text-decoration: none; font-weight: 500; }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .upload-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            color: #1e293b;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .drop-zone {
+            border: 2px dashed #cbd5e1;
+            padding: 40px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .drop-zone:hover { border-color: var(--primary); background: #f8fafc; }
+        .drop-zone i { font-size: 3rem; color: var(--primary); margin-bottom: 15px; }
+
+        .btn-analyze {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #file-name { margin-top: 10px; color: var(--primary); font-weight: 600; }
+        
+        .loader {
+            display: none;
+            margin-top: 20px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-left: auto; margin-right: auto;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/dashboard" style="font-size: 1.5rem; font-weight: bold;">Health<span>Assist</span></a>
+        <a href="/dashboard"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </nav>
+
+    <div class="container">
+        <div class="upload-card">
+            <i class="fas fa-file-medical-alt" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;"></i>
+            <h2>Report AI Analyzer</h2>
+            <p style="color: #64748b;">Upload your blood test or lab report (JPG/PNG/PDF)</p>
+
+            <form action="/analyze" method="post" enctype="multipart/form-data" id="upload-form">
+                <label for="file-upload" class="drop-zone" id="drop-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p id="file-label">Click or Drag & Drop Report Here</p>
+                    <input type="file" id="file-upload" name="report" hidden accept=".jpg,.png,.jpeg,.pdf" onchange="showFileName()">
+                    <div id="file-name"></div>
+                </label>
+                
+                <button type="submit" class="btn-analyze" onclick="showLoader()">Analyze with AI</button>
+            </form>
+
+            <div class="loader" id="loader"></div>
+            <p id="loading-text" style="display:none; color: #3b82f6; margin-top: 10px;">AI is reading your report...</p>
+        </div>
+    </div>
+
+    <script>
+        function showFileName() {
+            const input = document.getElementById('file-upload');
+            const fileName = document.getElementById('file-name');
+            const label = document.getElementById('file-label');
+            if (input.files.length > 0) {
+                fileName.innerText = "Selected: " + input.files[0].name;
+                label.innerText = "File Ready!";
+            }
+        }
+
+        function showLoader() {
+            const input = document.getElementById('file-upload');
+            if(input.files.length > 0) {
+                document.getElementById('loader').style.display = 'block';
+                document.getElementById('loading-text').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
