@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from PIL import Image
-from google import genai 
+import google.generativeai as genai
 
 app = Flask(__name__)
 app.secret_key = "health_assist_secret_key"
@@ -179,4 +179,5 @@ def logout():
 
 if __name__ == '__main__':
     init_db()
+
     app.run(debug=True)
