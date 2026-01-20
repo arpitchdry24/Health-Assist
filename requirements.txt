@@ -2,3 +2,4 @@ flask
 gunicorn
 razorpay
 Pillow
+google-generativeai
