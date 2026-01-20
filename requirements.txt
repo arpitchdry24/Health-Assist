@@ -1,6 +1,7 @@
 flask
 gunicorn
 razorpay
-Pillow
-google-generativeai==0.3.2
+werkzeug
+pillow
+google-generativeai
 typing-extensions
