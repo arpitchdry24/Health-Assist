@@ -17,9 +17,8 @@ RAZORPAY_KEY_SECRET = os.environ.get("LwkTinu4TO0QKvjuTEWxHLmD")
 razor_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
 
 # --- AI CONFIGURATION ---
-client = genai.Client(api_key=os.environ.get("AIzaSyAqgI3UWadfzTBqyFjf5c9tJMYtMXJuLGA"))
-MODEL_ID = "gemini-2.0-flash-exp" 
-
+genai.configure(api_key=os.environ.get("AIzaSyAqgI3UWadfzTBqyFjf5c9tJMYtMXJuLGA"))
+model = genai.GenerativeModel("gemini-1.5-flash")
 # --- UPLOAD CONFIG ---
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
@@ -181,5 +180,6 @@ if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
 
